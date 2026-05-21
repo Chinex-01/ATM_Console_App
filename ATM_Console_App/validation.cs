@@ -44,13 +44,11 @@ namespace ATM_Console_App
                 break;
             }
 
-            Console.Write(" Enter your phone number: ");
-            string phoneNumber = Console.ReadLine();
-            //check is phone number is null or empty
-            //check is phone nukber length is exactly 11 digits
-            //check that phone number does not contain alphabet
+            string phoneNumber;
             while (true)
             {
+                Console.Write(" Enter your phone number: ");
+                phoneNumber = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(phoneNumber))
                 {
                     Console.WriteLine("Phone number cannot be empty.");
