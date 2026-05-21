@@ -76,11 +76,10 @@ namespace ATM_Console_App
             }
 
             Console.Write(" Please create a pin: ");
-            int password = 0;
+            int password = Convert.ToInt32(Console.ReadLine());
             try
             {
                 Convert.ToInt32(password);
-
             }
             catch
             {
