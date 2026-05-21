@@ -15,7 +15,7 @@ namespace ATM_Console_App
 
             while (true)
             {
-                Console.WriteLine("Please enter your name: ");
+                Console.Write("Please enter your name: ");
                 Name = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(Name))
