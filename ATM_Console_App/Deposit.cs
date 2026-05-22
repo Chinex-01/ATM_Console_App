@@ -1,29 +1,30 @@
-﻿
-
-
-using ATM_Console_App;
+﻿using ATM_Console_App;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-namespace ATM_Console_App
 
+namespace ATM_Console_App
 {
     public static class Deposit
     {
         public static void deposit(string accountNumber)
         {
             string connectionString =
-           @"Server=(localdb)\MSSQLLocalDB;Database=ATM_Console_App;Trusted_Connection=True;";
+            @"Server=(localdb)\MSSQLLocalDB;Database=ATM_Console_App;Trusted_Connection=True;";
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
+
                 double balance = 0;
+
                 Console.WriteLine(" It's advisable for you to deposit after opening an account ");
                 Console.WriteLine(" Do you want to deposit (yes / no )");
-                var answr = Console.ReadLine();
+
+                var answr = Console.ReadLine().ToLower();
 
                 if (answr == "yes")
                 {
@@ -32,35 +33,33 @@ namespace ATM_Console_App
 
                     if (amount > 0 && amount % 1000 == 0)
                     {
-                        balance += amount;
-
-                        Console.WriteLine(" deposit successfully");
                         string query =
-                       "UPDATE Atm_nonso set balance = ISNULL(Balance, 0) + @amt  WHERE Accountnumber=@acc";
+                        "UPDATE Atm_nonso SET Balance = ISNULL(Balance, 0) + @amt WHERE Accountnumber=@acc";
+
                         using (SqlCommand cmd = new SqlCommand(query, connection))
                         {
                             cmd.Parameters.AddWithValue("@acc", accountNumber);
                             cmd.Parameters.AddWithValue("@amt", amount);
 
-                            balance = Convert.ToDouble(cmd.ExecuteScalar());
-
-                            Console.WriteLine("Current Balance: " + amount);
+                            cmd.ExecuteNonQuery();
                         }
-
 
                         string balquery =
                         "SELECT Balance FROM Atm_nonso WHERE Accountnumber=@acc";
 
-                        using (SqlCommand cmd = new SqlCommand(balquery, connection))
+                        using (SqlCommand cmd2 = new SqlCommand(balquery, connection))
                         {
-                            cmd.Parameters.AddWithValue("@acc", accountNumber);
+                            cmd2.Parameters.AddWithValue("@acc", accountNumber);
 
-                            balance = Convert.ToDouble(cmd.ExecuteScalar());
+                            balance = Convert.ToDouble(cmd2.ExecuteScalar());
                         }
 
-                    
-                        Console.Write(" Do you want to do another service us (yes/no): ");
-                        string answerr = Console.ReadLine();
+                        Console.WriteLine("Deposit Successful");
+                        Console.WriteLine("Current Balance: " + balance);
+
+                        Console.Write(" Do you want to do another service with us (yes/no): ");
+                        string answerr = Console.ReadLine().ToLower();
+
                         if (answerr == "no")
                         {
                             Console.WriteLine(" Thank you for banking with us ");
@@ -82,7 +81,9 @@ namespace ATM_Console_App
 
                                 int choice = Convert.ToInt32(Console.ReadLine());
 
-             
+                                string balquery2 =
+                                "SELECT Balance FROM Atm_nonso WHERE Accountnumber=@acc";
+
                                 if (choice == 1)
                                 {
                                     Console.Write("Enter amount: ");
@@ -91,23 +92,25 @@ namespace ATM_Console_App
                                     if (amountt > 0 && amountt % 1000 == 0)
                                     {
                                         string dequery =
-                                        "UPDATE Atm_nonso SET Balance = Balance + @amt WHERE Accountnumber=@acc";
+                                        "UPDATE Atm_nonso SET Balance = ISNULL(Balance, 0) + @amt WHERE Accountnumber=@acc";
 
                                         using (SqlCommand cmd = new SqlCommand(dequery, connection))
                                         {
-                                            cmd.Parameters.AddWithValue("@amt", amountt);
                                             cmd.Parameters.AddWithValue("@acc", accountNumber);
+                                            cmd.Parameters.AddWithValue("@amt", amount);
 
                                             cmd.ExecuteNonQuery();
                                         }
 
-                                    
-                                        using (SqlCommand cmd = new SqlCommand(balquery, connection))
+                                       
+                                        using (SqlCommand cmd2 = new SqlCommand(balquery, connection))
                                         {
-                                            cmd.Parameters.AddWithValue("@acc", accountNumber);
+                                            cmd2.Parameters.AddWithValue("@acc", accountNumber);
 
-                                            balance = Convert.ToDouble(cmd.ExecuteScalar());
+                                            balance = Convert.ToDouble(cmd2.ExecuteScalar());
                                         }
+
+                                       
 
                                         Console.WriteLine("Deposit Successful");
                                         Console.WriteLine("Current Balance: " + balance);
@@ -118,10 +121,9 @@ namespace ATM_Console_App
                                     }
                                 }
 
-                           
                                 else if (choice == 2)
                                 {
-                                    using (SqlCommand cmd = new SqlCommand(balquery, connection))
+                                    using (SqlCommand cmd = new SqlCommand(balquery2, connection))
                                     {
                                         cmd.Parameters.AddWithValue("@acc", accountNumber);
 
@@ -131,19 +133,16 @@ namespace ATM_Console_App
                                     Console.WriteLine("Current Balance: " + balance);
                                 }
 
-                           
                                 else if (choice == 3)
                                 {
-                                 
+                                    Console.Write("Enter amount: ");
+                                    double amouunt = Convert.ToDouble(Console.ReadLine());
+
                                     using (SqlCommand cmd = new SqlCommand(balquery, connection))
                                     {
                                         cmd.Parameters.AddWithValue("@acc", accountNumber);
-
                                         balance = Convert.ToDouble(cmd.ExecuteScalar());
                                     }
-
-                                    Console.Write("Enter amount: ");
-                                    double amouunt = Convert.ToDouble(Console.ReadLine());
 
                                     if (amouunt > 0 && amouunt % 1000 == 0 && amouunt <= balance)
                                     {
@@ -158,7 +157,6 @@ namespace ATM_Console_App
                                             cmd.ExecuteNonQuery();
                                         }
 
-                                     
                                         using (SqlCommand cmd = new SqlCommand(balquery, connection))
                                         {
                                             cmd.Parameters.AddWithValue("@acc", accountNumber);
@@ -167,13 +165,14 @@ namespace ATM_Console_App
                                         }
 
                                         Console.WriteLine("Withdrawal Successful");
-                                        Console.WriteLine("Current Balance: " + balance);
+                                        Console.WriteLine("Remaining Balance: " + balance);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Invalid Amount or Insufficient Balance");
+                                        Console.WriteLine("Insufficient Balance or Invalid Amount");
                                     }
                                 }
+                                   
 
                                 else if (choice == 4)
                                 {
@@ -194,7 +193,6 @@ namespace ATM_Console_App
                                     Console.WriteLine("PIN Updated Successfully");
                                 }
 
-                             
                                 else if (choice == 5)
                                 {
                                     Console.Write(" Enter your old number: ");
@@ -227,10 +225,13 @@ namespace ATM_Console_App
                                         Console.WriteLine("It wasn't updated");
                                     }
                                 }
+
                                 break;
                             }
+
                             Console.Write(" Do you want to do another service us (yes/no): ");
-                            string answwerr = Console.ReadLine();
+                            string answwerr = Console.ReadLine().ToLower();
+
                             if (answwerr == "no")
                             {
                                 Console.WriteLine(" Thank you for banking with us ");
@@ -241,23 +242,23 @@ namespace ATM_Console_App
                             {
                                 Services.Service(accountNumber);
                             }
-                          
                         }
-
                     }
                     else
                     {
                         Console.WriteLine(" invalid amount (must be in 1000 notes)");
                     }
-
                 }
+
                 else if (answr == "no")
                 {
                     do
                     {
                         Console.WriteLine(" alright. Noted!! ");
+
                         Console.Write(" Do you want to do another service us (yes/no): ");
-                        string answerr = Console.ReadLine();
+                        string answerr = Console.ReadLine().ToLower();
+
                         if (answerr == "no")
                         {
                             Console.WriteLine(" Thank you for banking with us ");
@@ -268,14 +269,16 @@ namespace ATM_Console_App
                         {
                             Services.Service(accountNumber);
                         }
+
                         break;
+
                     } while (answr == "no");
                 }
                 else
                 {
                     Console.WriteLine(" Have a nice day!! ");
-
                 }
+
                 return;
             }
         }
