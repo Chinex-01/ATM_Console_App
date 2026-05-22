@@ -43,6 +43,9 @@ namespace ATM_Console_App
                 }
                 break;
             }
+            //check is phone number is null or empty
+            //check is phone nukber length is exactly 11 digits
+            //check that phone number does not contain alphabet
 
             string phoneNumber;
             while (true)
@@ -74,11 +77,10 @@ namespace ATM_Console_App
             }
 
             Console.Write(" Please create a pin: ");
-            int password = 0;
+            int password = Convert.ToInt32(Console.ReadLine());
             try
             {
                 Convert.ToInt32(password);
-
             }
             catch
             {

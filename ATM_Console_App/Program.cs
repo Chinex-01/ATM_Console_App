@@ -80,7 +80,7 @@ namespace nonso
                     if (Custoomer.Pin == password)
                     {
                         Console.WriteLine(" Login successful");
-                        Console.WriteLine("welcome " + Name);
+                        Console.WriteLine("welcome " + Custoomer.Name);
                         Services.Service(accountNumber);
                     }
                     else
