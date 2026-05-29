@@ -105,7 +105,7 @@ namespace ATM_Console_App
 
                     else if (choice == 4)
                     {
-                        Console.Write(" Enter your old PIN: ");
+                        Console.Write("Enter your old PIN: ");
                         string oldPin = Console.ReadLine();
 
                         Console.Write("Enter New PIN: ");
@@ -114,28 +114,28 @@ namespace ATM_Console_App
                         Console.Write("Re-enter New PIN: ");
                         string newPin1 = Console.ReadLine();
 
-                        Console.WriteLine(" ");
+                        Console.WriteLine();
+
                         if (newPin1 == newPin)
                         {
-                            Console.WriteLine("Phone Number Updated Successfully");
+                            string query =
+                            "UPDATE Atm_nonso SET Pin=@pin WHERE Accountnumber=@acc";
+
+                            using (SqlCommand cmd = new SqlCommand(query, connection))
+                            {
+                                cmd.Parameters.AddWithValue("@pin", newPin);
+                                cmd.Parameters.AddWithValue("@acc", accountNumber);
+
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            Console.WriteLine("PIN Updated Successfully");
                         }
                         else
                         {
-                            Console.WriteLine(" Both don't match");
-                            Console.WriteLine(" it wasnt updated");
+                            Console.WriteLine("Both don't match");
+                            Console.WriteLine("It wasn't updated");
                         }
-                        string query =
-                        "UPDATE Atm_nonso SET Pin=@pin WHERE Accountnumber=@acc";
-
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
-                        {
-                            cmd.Parameters.AddWithValue("@pin", newPin);
-                            cmd.Parameters.AddWithValue("@acc", accountNumber);
-
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        Console.WriteLine("PIN Updated Successfully");
                     }
                     else if (choice == 5)
                     {
