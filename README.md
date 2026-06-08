@@ -6,8 +6,8 @@ An Automated Teller Machine (ATM) is an electronic banking device that allows cu
 ## **Description**
 A console-based ATM banking application built with C# that enables customer registration, account number generation, deposits, withdrawals, balance inquiries, PIN management.
 
-### **Table of Contents** 
-     1. [Program.cs](#Program.)
+    **Table of Contents** 
+     1. [Program.cs](#Program)
      2. [Customer.cs](#Customer)
      3. [Generate.cs](#Generate)
      4. [Services.cs](#Service)
