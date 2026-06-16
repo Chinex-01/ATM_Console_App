@@ -1,0 +1,23 @@
+{
+  "name": "atm_console_app",
+  "version": "1.0.0",
+  "description": "An Automated Teller Machine (ATM) is an electronic banking device that allows customers to perform basic financial transactions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chinex-01/ATM_Console_App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chinex-01/ATM_Console_App/issues"
+  },
+  "homepage": "https://github.com/Chinex-01/ATM_Console_App#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
