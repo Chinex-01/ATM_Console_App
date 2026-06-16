@@ -17,7 +17,19 @@ namespace ATM_Console_App
             {
                 connection.Open();
 
-                string Query = "SELECT Balance FROM Atm_nonso WHERE Accountnumber=@acc AND Pin=@pin";
+                string getBalance =
+                  "SELECT Balance FROM Atm_nonso WHERE Accountnumber=@acc";
+
+                using (SqlCommand cmd = new SqlCommand(getBalance, connection))
+                {
+                    cmd.Parameters.AddWithValue("@acc", accountNumber);
+
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                        balance = Convert.ToDouble(result);
+                }
+
 
                 bool running = true;
                 while (running)
@@ -28,7 +40,6 @@ namespace ATM_Console_App
                     Console.WriteLine("3 Withdraw");
                     Console.WriteLine("4 Change PIN");
                     Console.WriteLine("5 Update Phone Number");
-
 
                     int choice = Convert.ToInt32(Console.ReadLine());
 
